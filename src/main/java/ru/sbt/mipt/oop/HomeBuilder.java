@@ -2,6 +2,8 @@ package ru.sbt.mipt.oop;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ru.sbt.mipt.oop.door.Door;
+import ru.sbt.mipt.oop.light.Light;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

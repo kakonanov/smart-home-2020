@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SmartHome {
-    private Collection<Room> rooms;
+    private final Collection<Room> rooms;
 
     public SmartHome() {
         rooms = new ArrayList<>();
