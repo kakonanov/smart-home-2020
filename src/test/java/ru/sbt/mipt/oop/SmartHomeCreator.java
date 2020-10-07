@@ -1,7 +1,8 @@
 package ru.sbt.mipt.oop;
 
-import ru.sbt.mipt.oop.door.Door;
-import ru.sbt.mipt.oop.light.Light;
+import ru.sbt.mipt.oop.domain.Door;
+import ru.sbt.mipt.oop.domain.Light;
+import ru.sbt.mipt.oop.domain.Room;
 
 import java.util.Arrays;
 

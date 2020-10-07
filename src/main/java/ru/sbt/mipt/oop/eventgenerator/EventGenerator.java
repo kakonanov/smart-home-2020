@@ -1,7 +1,7 @@
 package ru.sbt.mipt.oop.eventgenerator;
 
-import ru.sbt.mipt.oop.Event;
+import ru.sbt.mipt.oop.SensorEvent;
 
 public interface EventGenerator {
-    Event getNextEvent();
+    SensorEvent getNextEvent();
 }

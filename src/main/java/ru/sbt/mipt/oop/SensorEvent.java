@@ -2,11 +2,11 @@ package ru.sbt.mipt.oop;
 
 import ru.sbt.mipt.oop.type.EventType;
 
-public class Event {
+public class SensorEvent {
     private final EventType type;
     private final String objectId;
 
-    public Event(EventType type, String objectId) {
+    public SensorEvent(EventType type, String objectId) {
         this.type = type;
         this.objectId = objectId;
     }
