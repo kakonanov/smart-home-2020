@@ -1,5 +1,6 @@
 package ru.sbt.mipt.oop.eventhandler;
 
+import ru.sbt.mipt.oop.domain.Door;
 import ru.sbt.mipt.oop.domain.Room;
 import ru.sbt.mipt.oop.SensorCommand;
 import ru.sbt.mipt.oop.SensorEvent;
@@ -24,11 +25,18 @@ public class AllLightEventHandler implements EventHandler {
 			smartHome.execute(o -> {
 				if (o instanceof Room) {
 					Room room = (Room) o;
-					if (room.getName().equals("hall") && room.containsDoor(sensorEvent.getObjectId())) {
-						smartHome.execute(a -> {
-							if (a instanceof Light) {
-								Light light = (Light) a;
-								lightOff(light);
+					if (room.getName().equals("hall")) {
+						room.execute(d -> {
+							if (d instanceof Door) {
+								Door door = (Door) d;
+								if (door.getId().equals(sensorEvent.getObjectId())) {
+									smartHome.execute(a -> {
+										if (a instanceof Light) {
+											Light light = (Light) a;
+											lightOff(light);
+										}
+									});
+								}
 							}
 						});
 					}

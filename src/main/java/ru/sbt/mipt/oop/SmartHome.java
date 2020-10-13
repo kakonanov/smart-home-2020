@@ -21,14 +21,11 @@ public class SmartHome implements Actionable {
         rooms.add(room);
     }
 
-    public Collection<Room> getRooms() {
-        return rooms;
-    }
-
     @Override
     public void execute(Action action) {
         for (Room room : rooms) {
             room.execute(action);
         }
+        action.doAction(this);
     }
 }
