@@ -9,11 +9,9 @@ import ru.sbt.mipt.oop.smarthomereader.SmartHomeReaderFromJs;
 
 public class Application {
     private final EventCircle eventCircle;
-    private final SmartHome smartHome;
 
-    Application(SmartHomeReader smartHomeReader, EventGenerator eventGenerator) {
-        smartHome = smartHomeReader.read();
-        eventCircle = new EventCircleImpl(smartHome, eventGenerator);
+    Application(EventCircle eventCircle) {
+        this.eventCircle = eventCircle;
     }
 
     public void run() {
@@ -21,7 +19,10 @@ public class Application {
     }
 
     public static void main(String... args) {
-        Application application = new Application(new SmartHomeReaderFromJs("smart-home-1.js"), new EventGeneratorImpl());
+        SmartHomeReader smartHomeReader = new SmartHomeReaderFromJs("smart-home-1.js");
+        SmartHome smartHome = smartHomeReader.read();
+        EventCircle eventCircle = new EventCircleImpl(smartHome, new EventGeneratorImpl());
+        Application application = new Application(eventCircle);
         application.run();
     }
 }
