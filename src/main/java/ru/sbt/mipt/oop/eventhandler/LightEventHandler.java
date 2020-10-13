@@ -13,6 +13,7 @@ public class LightEventHandler implements EventHandler {
 		this.smartHome = smartHome;
 	}
 
+	@Override
 	public void handle(SensorEvent sensorEvent) {
 		if (sensorEvent.getType().toString().contains("LIGHT_")) {
 			smartHome.execute(o -> {

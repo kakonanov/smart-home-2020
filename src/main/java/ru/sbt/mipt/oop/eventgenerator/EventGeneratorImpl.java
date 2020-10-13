@@ -7,7 +7,8 @@ public class EventGeneratorImpl implements EventGenerator {
 
 	public SensorEvent getNextEvent() {
 		if (Math.random() < 0.05) return null;
-		EventType eventType = EventType.values()[(int) (4 * Math.random())];
+		EventType eventType = EventType.values()[(int) (6 * Math.random())];
+		eventType.setCode("code");
 		String objectId = "" + ((int) (10 * Math.random()));
 		return new SensorEvent(eventType, objectId);
 	}

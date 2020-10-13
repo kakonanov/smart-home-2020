@@ -19,6 +19,7 @@ public class AllLightEventHandler implements EventHandler {
 		this.commandSender = new CommandSenderImpl();
 	}
 
+	@Override
 	public void handle(SensorEvent sensorEvent) {
 		if (sensorEvent.getType() == DOOR_CLOSED) {
 			smartHome.execute(o -> {

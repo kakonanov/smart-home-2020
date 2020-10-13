@@ -13,6 +13,7 @@ public class DoorEventHandler implements EventHandler {
 		this.smartHome = smartHome;
 	}
 
+	@Override
 	public void handle(SensorEvent sensorEvent) {
 		if (sensorEvent.getType().toString().contains("DOOR_")) {
 			smartHome.execute(o -> {

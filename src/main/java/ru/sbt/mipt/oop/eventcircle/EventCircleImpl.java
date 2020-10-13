@@ -3,11 +3,8 @@ package ru.sbt.mipt.oop.eventcircle;
 import ru.sbt.mipt.oop.Action;
 import ru.sbt.mipt.oop.SensorEvent;
 import ru.sbt.mipt.oop.SmartHome;
-import ru.sbt.mipt.oop.eventhandler.AllLightEventHandler;
-import ru.sbt.mipt.oop.eventhandler.DoorEventHandler;
+import ru.sbt.mipt.oop.eventhandler.*;
 import ru.sbt.mipt.oop.eventgenerator.EventGenerator;
-import ru.sbt.mipt.oop.eventhandler.EventHandler;
-import ru.sbt.mipt.oop.eventhandler.LightEventHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,13 +17,14 @@ public class EventCircleImpl implements EventCircle{
 	public EventCircleImpl(SmartHome smartHome, EventGenerator eventGenerator) {
 		this.smartHome = smartHome;
 		this.eventGenerator = eventGenerator;
-		eventHandlers = Arrays.asList(new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome));
+		eventHandlers = Arrays.asList(new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome));
 	}
 
 	public void run() {
 		SensorEvent sensorEvent = eventGenerator.getNextEvent();
 
 		while (sensorEvent != null) {
+			System.out.println(sensorEvent);
 			for (EventHandler eventHandler : eventHandlers) {
 				eventHandler.handle(sensorEvent);
 			}
