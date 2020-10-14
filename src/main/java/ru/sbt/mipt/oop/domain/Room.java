@@ -15,23 +15,6 @@ public class Room implements Actionable {
         this.name = name;
     }
 
-    public Collection<Light> getLights() {
-        return lights;
-    }
-
-    public Collection<Door> getDoors() {
-        return doors;
-    }
-
-    public boolean containsDoor(String id) {
-        for (Door door : doors) {
-            if (door.getId().equals(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public String getName() {
         return name;
     }

@@ -26,7 +26,6 @@ public class SignalizationEventHandler implements EventHandler {
 					} else if (sensorEvent.getType() == ALARM_DEACTIVATE) {
 						signalization.getState().deactivate(code);
 					}
-
 				}
 			});
 		}

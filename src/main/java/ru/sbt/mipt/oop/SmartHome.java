@@ -17,14 +17,11 @@ public class SmartHome implements Actionable {
 
     public SmartHome(Collection<Room> rooms) {
         this.rooms = rooms;
+        signalization = new Signalization();
     }
 
     public void addRoom(Room room) {
         rooms.add(room);
-    }
-
-    public Collection<Room> getRooms() {
-        return rooms;
     }
 
     @Override
@@ -33,5 +30,6 @@ public class SmartHome implements Actionable {
             room.execute(action);
         }
         signalization.execute(action);
+        action.doAction(this);
     }
 }

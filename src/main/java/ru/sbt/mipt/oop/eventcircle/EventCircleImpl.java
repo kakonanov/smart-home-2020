@@ -8,6 +8,8 @@ import ru.sbt.mipt.oop.eventgenerator.EventGenerator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EventCircleImpl implements EventCircle{
 	private final SmartHome smartHome;
@@ -17,7 +19,8 @@ public class EventCircleImpl implements EventCircle{
 	public EventCircleImpl(SmartHome smartHome, EventGenerator eventGenerator) {
 		this.smartHome = smartHome;
 		this.eventGenerator = eventGenerator;
-		eventHandlers = Arrays.asList(new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome));
+		eventHandlers = Stream.of(new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome))
+				.map(eventHandler -> new AlarmDecoratorEventHandler(eventHandler, smartHome)).collect(Collectors.toList());
 	}
 
 	public void run() {
@@ -25,8 +28,15 @@ public class EventCircleImpl implements EventCircle{
 
 		while (sensorEvent != null) {
 			System.out.println(sensorEvent);
-			for (EventHandler eventHandler : eventHandlers) {
-				eventHandler.handle(sensorEvent);
+			try {
+				for (EventHandler eventHandler : eventHandlers) {
+					eventHandler.handle(sensorEvent);
+				}
+			} catch (RuntimeException runtimeException) {
+				if (runtimeException.getCause() instanceof IllegalAccessException) {
+				} else {
+					throw runtimeException;
+				}
 			}
 			sensorEvent = eventGenerator.getNextEvent();
 		}
