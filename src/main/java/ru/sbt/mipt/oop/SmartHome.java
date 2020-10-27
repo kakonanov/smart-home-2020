@@ -20,6 +20,10 @@ public class SmartHome implements Actionable {
         signalization = new Signalization();
     }
 
+    public Signalization getSignalization() {
+        return signalization;
+    }
+
     public void addRoom(Room room) {
         rooms.add(room);
     }
@@ -29,7 +33,6 @@ public class SmartHome implements Actionable {
         for (Room room : rooms) {
             room.execute(action);
         }
-        signalization.execute(action);
         action.doAction(this);
     }
 }

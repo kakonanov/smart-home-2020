@@ -1,6 +1,7 @@
 package ru.sbt.mipt.oop.eventcircle;
 
 import ru.sbt.mipt.oop.Action;
+import ru.sbt.mipt.oop.SenderAlarmMessage;
 import ru.sbt.mipt.oop.SensorEvent;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.eventhandler.*;
@@ -19,8 +20,9 @@ public class EventCircleImpl implements EventCircle{
 	public EventCircleImpl(SmartHome smartHome, EventGenerator eventGenerator) {
 		this.smartHome = smartHome;
 		this.eventGenerator = eventGenerator;
-		eventHandlers = Stream.of(new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome))
-				.map(eventHandler -> new AlarmDecoratorEventHandler(eventHandler, smartHome)).collect(Collectors.toList());
+		SenderAlarmMessage senderAlarmMessage = new SenderAlarmMessage();
+		eventHandlers = Stream.of(new StartEventHandler(), new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome))
+				.map(eventHandler -> new AlarmDecoratorEventHandler(eventHandler, smartHome, senderAlarmMessage)).collect(Collectors.toList());
 	}
 
 	public void run() {
@@ -28,15 +30,8 @@ public class EventCircleImpl implements EventCircle{
 
 		while (sensorEvent != null) {
 			System.out.println(sensorEvent);
-			try {
-				for (EventHandler eventHandler : eventHandlers) {
-					eventHandler.handle(sensorEvent);
-				}
-			} catch (RuntimeException runtimeException) {
-				if (runtimeException.getCause() instanceof IllegalAccessException) {
-				} else {
-					throw runtimeException;
-				}
+			for (EventHandler eventHandler : eventHandlers) {
+				eventHandler.handle(sensorEvent);
 			}
 			sensorEvent = eventGenerator.getNextEvent();
 		}

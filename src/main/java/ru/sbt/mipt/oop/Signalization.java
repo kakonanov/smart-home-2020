@@ -1,42 +1,38 @@
 package ru.sbt.mipt.oop;
 
 import ru.sbt.mipt.oop.domain.Actionable;
-import ru.sbt.mipt.oop.state.DeactivatedState;
-import ru.sbt.mipt.oop.state.State;
+import ru.sbt.mipt.oop.state.DeactivatedAlarmState;
+import ru.sbt.mipt.oop.state.AlarmState;
 
-public class Signalization implements Actionable {
-    private State state;
+public class Signalization {
+    private AlarmState alarmState;
     private String code;
 
     Signalization() {
-        this.state = new DeactivatedState(this);
+        this.alarmState = new DeactivatedAlarmState(this);
     }
 
-    public State getState() {
-        return state;
+    public AlarmState getState() {
+        return alarmState;
+    }
+
+    public boolean isCodeCorrect(String code) {
+        return this.code.equals(code);
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public void activate(String code) {
-        this.code = code;
-        System.out.println("Signalization activated");
+        alarmState.activate(code);
     }
 
     public void deactivate(String code) {
-        if (this.code.equals(code)) {
-            this.code = null;
-            System.out.println("Signalization deactivated");
-        } else {
-            state.switchToAlarmMode();
-            System.out.println("Alarm!!");
-        }
+        alarmState.deactivate(code);
     }
 
-    public void setState(State state){
-        this.state = state;
-    }
-
-    @Override
-    public void execute(Action action) {
-        action.doAction(this);
+    public void setState(AlarmState alarmState){
+        this.alarmState = alarmState;
     }
 }

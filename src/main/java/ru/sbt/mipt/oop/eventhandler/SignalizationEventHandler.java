@@ -17,17 +17,13 @@ public class SignalizationEventHandler implements EventHandler {
 	@Override
 	public void handle(SensorEvent sensorEvent) {
 		if (sensorEvent.getType().toString().contains("ALARM_")) {
-			smartHome.execute(o -> {
-				if (o instanceof Signalization) {
-					Signalization signalization = (Signalization) o;
-					String code = sensorEvent.getType().getCode();
-					if (sensorEvent.getType() == ALARM_ACTIVATE) {
-						signalization.getState().activate(code);
-					} else if (sensorEvent.getType() == ALARM_DEACTIVATE) {
-						signalization.getState().deactivate(code);
-					}
-				}
-			});
+			Signalization signalization = smartHome.getSignalization();
+			String code = sensorEvent.getCode();
+			if (sensorEvent.getType() == ALARM_ACTIVATE) {
+				signalization.getState().activate(code);
+			} else if (sensorEvent.getType() == ALARM_DEACTIVATE) {
+				signalization.getState().deactivate(code);
+			}
 		}
 	}
 

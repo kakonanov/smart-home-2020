@@ -5,20 +5,16 @@ import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.SensorEvent;
 import ru.sbt.mipt.oop.Signalization;
 import ru.sbt.mipt.oop.SmartHome;
-import ru.sbt.mipt.oop.domain.Door;
-import ru.sbt.mipt.oop.domain.Light;
 import ru.sbt.mipt.oop.domain.Room;
-import ru.sbt.mipt.oop.state.ActivatedState;
-import ru.sbt.mipt.oop.state.AlarmModeState;
-import ru.sbt.mipt.oop.state.DeactivatedState;
+import ru.sbt.mipt.oop.state.ActivatedAlarmState;
+import ru.sbt.mipt.oop.state.AlarmModeAlarmState;
+import ru.sbt.mipt.oop.state.DeactivatedAlarmState;
 import ru.sbt.mipt.oop.type.EventType;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.sbt.mipt.oop.type.EventType.ALARM_ACTIVATE;
-import static ru.sbt.mipt.oop.type.EventType.ALARM_DEACTIVATE;
 
 class SignalizationEventHandlerTest {
     private EventHandler eventHandler;
@@ -35,15 +31,15 @@ class SignalizationEventHandlerTest {
     void handleEventWithTypeAlarmActivate() {
         // given
         EventType eventType = EventType.ALARM_ACTIVATE;
-        eventType.setCode("1234");
         sensorEvent = new SensorEvent(eventType, "0");
+        sensorEvent.setCode("1234");
         //when
         eventHandler.handle(sensorEvent);
         //then
         smartHome.execute(o -> {
             if (o instanceof Signalization) {
                 Signalization signalization = (Signalization) o;
-                assertEquals(ActivatedState.class, signalization.getState().getClass());
+                assertEquals(ActivatedAlarmState.class, signalization.getState().getClass());
             }
         });
     }
@@ -52,8 +48,8 @@ class SignalizationEventHandlerTest {
     void handleEventWithTypeAlarmDeactivate() {
         //given
         EventType eventType = EventType.ALARM_DEACTIVATE;
-        eventType.setCode("1234");
         sensorEvent = new SensorEvent(eventType, "0");
+        sensorEvent.setCode("1234");
         smartHome.execute(o -> {
             if (o instanceof Signalization) {
                 Signalization signalization = (Signalization) o;
@@ -66,7 +62,7 @@ class SignalizationEventHandlerTest {
         smartHome.execute(o -> {
             if (o instanceof Signalization) {
                 Signalization signalization = (Signalization) o;
-                assertEquals(DeactivatedState.class, signalization.getState().getClass());
+                assertEquals(DeactivatedAlarmState.class, signalization.getState().getClass());
             }
         });
     }
@@ -75,8 +71,8 @@ class SignalizationEventHandlerTest {
     void handleEventWithSwitchToAlarmMode_whereCodeIsNotCorrect() {
         //given
         EventType eventType = EventType.ALARM_DEACTIVATE;
-        eventType.setCode("134");
         sensorEvent = new SensorEvent(eventType, "0");
+        sensorEvent.setCode("134");
         smartHome.execute(o -> {
             if (o instanceof Signalization) {
                 Signalization signalization = (Signalization) o;
@@ -89,7 +85,7 @@ class SignalizationEventHandlerTest {
         smartHome.execute(o -> {
             if (o instanceof Signalization) {
                 Signalization signalization = (Signalization) o;
-                assertEquals(AlarmModeState.class, signalization.getState().getClass());
+                assertEquals(AlarmModeAlarmState.class, signalization.getState().getClass());
             }
         });
     }
