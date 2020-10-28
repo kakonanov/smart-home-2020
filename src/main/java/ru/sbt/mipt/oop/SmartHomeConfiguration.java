@@ -4,6 +4,7 @@ import com.coolcompany.smarthome.events.SensorEventsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import ru.sbt.mipt.oop.eventhandler.*;
 import ru.sbt.mipt.oop.smarthomereader.SmartHomeReader;
 import ru.sbt.mipt.oop.smarthomereader.SmartHomeReaderFromJs;
@@ -28,8 +29,9 @@ public class SmartHomeConfiguration {
 	@Bean
 	Collection<EventHandler> eventHandlers() {
 		SenderAlarmMessage senderAlarmMessage = new SenderAlarmMessage();
-		return Stream.of(new StartEventHandler(), new DoorEventHandler(smartHome()), new LightEventHandler(smartHome()), new AllLightEventHandler(smartHome()), new SignalizationEventHandler(smartHome()))
-				.map(eventHandler -> new AlarmDecoratorEventHandler(eventHandler, smartHome(), senderAlarmMessage)).collect(Collectors.toList());
+		SmartHome smartHome = smartHome();
+		return Stream.of(new StartEventHandler(), new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome))
+				.map(eventHandler -> new AlarmDecoratorEventHandler(eventHandler, smartHome, senderAlarmMessage)).collect(Collectors.toList());
 	}
 
 	@Bean
