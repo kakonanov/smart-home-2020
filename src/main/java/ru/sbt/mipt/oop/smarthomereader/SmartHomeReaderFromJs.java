@@ -1,6 +1,7 @@
 package ru.sbt.mipt.oop.smarthomereader;
 
 import com.google.gson.Gson;
+import org.springframework.stereotype.Component;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.smarthomereader.SmartHomeReader;
 
@@ -8,14 +9,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Component("smartHomeReader")
 public class SmartHomeReaderFromJs implements SmartHomeReader {
-    private final String filename;
-    public SmartHomeReaderFromJs(String filename) {
-        this.filename = filename;
-    }
-
     @Override
-    public SmartHome read() {
+    public SmartHome readFrom(String filename) {
         try {
             Gson gson = new Gson();
             String json = new String(Files.readAllBytes(Paths.get(filename)));

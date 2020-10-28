@@ -4,6 +4,8 @@ import ru.sbt.mipt.oop.domain.Actionable;
 import ru.sbt.mipt.oop.state.DeactivatedAlarmState;
 import ru.sbt.mipt.oop.state.AlarmState;
 
+import java.util.Objects;
+
 public class Signalization {
     private AlarmState alarmState;
     private String code;
@@ -17,7 +19,7 @@ public class Signalization {
     }
 
     public boolean isCodeCorrect(String code) {
-        return this.code.equals(code);
+        return Objects.equals(this.code, code);
     }
 
     public void setCode(String code) {

@@ -1,11 +1,13 @@
 package ru.sbt.mipt.oop;
 
+import org.springframework.stereotype.Component;
 import ru.sbt.mipt.oop.domain.Actionable;
 import ru.sbt.mipt.oop.domain.Room;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Component("smartHome")
 public class SmartHome implements Actionable {
     private final Collection<Room> rooms;
     private Signalization signalization;
