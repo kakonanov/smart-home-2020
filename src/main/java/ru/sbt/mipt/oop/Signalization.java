@@ -37,4 +37,6 @@ public class Signalization {
     public void setState(AlarmState alarmState){
         this.alarmState = alarmState;
     }
+
+    public void switchToAlarmMode() {alarmState.switchToAlarmMode();}
 }

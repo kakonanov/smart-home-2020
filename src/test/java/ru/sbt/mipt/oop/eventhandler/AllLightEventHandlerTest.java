@@ -10,9 +10,9 @@ import ru.sbt.mipt.oop.domain.Room;
 import ru.sbt.mipt.oop.type.EventType;
 
 import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class AllLightEventHandlerTest {
     private EventHandler eventHandler;
