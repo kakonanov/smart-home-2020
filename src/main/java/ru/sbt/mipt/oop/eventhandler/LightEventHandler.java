@@ -1,14 +1,18 @@
 package ru.sbt.mipt.oop.eventhandler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.sbt.mipt.oop.*;
 import ru.sbt.mipt.oop.domain.Light;
 
 import static ru.sbt.mipt.oop.type.EventType.LIGHT_OFF;
 import static ru.sbt.mipt.oop.type.EventType.LIGHT_ON;
 
+@Component
 public class LightEventHandler implements EventHandler {
 	private final SmartHome smartHome;
 
+	@Autowired
 	public LightEventHandler(SmartHome smartHome) {
 		this.smartHome = smartHome;
 	}
