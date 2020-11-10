@@ -28,10 +28,10 @@ public class AlarmDecoratorEventHandler implements EventHandler {
 		} else if (eventHandler instanceof StartEventHandler) {
 			senderAlarmMessage.setFlag(true);
 		}
-		else if (signalization.getState().getClass().equals(AlarmModeAlarmState.class)) {
+		else if (signalization.isAlarmModeAlarmState()) {
 			senderAlarmMessage.sendMessage("Sending sms - alarm mode");
 		}
-		else if (signalization.getState().getClass().equals(ActivatedAlarmState.class)) {
+		else if (signalization.isActivatedAlarmState()) {
 			System.out.println("Sending sms - event with active signalization");
 			System.out.println("Sending sms - switch to alarm mode");
 			signalization.setState(new AlarmModeAlarmState(signalization));

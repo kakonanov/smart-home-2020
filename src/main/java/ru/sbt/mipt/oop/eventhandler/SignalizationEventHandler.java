@@ -20,9 +20,9 @@ public class SignalizationEventHandler implements EventHandler {
 			Signalization signalization = smartHome.getSignalization();
 			String code = sensorEvent.getCode();
 			if (sensorEvent.getType() == ALARM_ACTIVATE) {
-				signalization.getState().activate(code);
+				signalization.activate(code);
 			} else if (sensorEvent.getType() == ALARM_DEACTIVATE) {
-				signalization.getState().deactivate(code);
+				signalization.deactivate(code);
 			}
 		}
 	}

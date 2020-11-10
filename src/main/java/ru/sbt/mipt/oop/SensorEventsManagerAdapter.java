@@ -1,37 +1,33 @@
 package ru.sbt.mipt.oop;
 
 import com.coolcompany.smarthome.events.SensorEventsManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.sbt.mipt.oop.eventhandler.EventHandler;
+import ru.sbt.mipt.oop.factory.ConversionFactory;
 import ru.sbt.mipt.oop.type.EventType;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class SensorEventsManagerAdapter {
 	private final Collection<EventHandler> eventHandlers;
-	private final SensorEventsManager sensorEventsManager;
-	SensorEventsManagerAdapter(Collection<EventHandler> eventHandlers) {
+	private final ConversionFactory conversionFactory;
+
+	@Autowired
+	SensorEventsManagerAdapter(Collection<EventHandler> eventHandlers, ConversionFactory conversionFactory) {
 		this.eventHandlers = eventHandlers;
-		sensorEventsManager = new SensorEventsManager();
+		this.conversionFactory = conversionFactory;
 	}
 
 	public SensorEventsManager getSensorEventsManager() {
-		eventHandlers.forEach(eventHandler -> sensorEventsManager.registerEventHandler(event -> {
-			eventHandler.handle(new SensorEvent(getEventTypeByString(event.getEventType()), event.getObjectId()));
-		}));
+		SensorEventsManager sensorEventsManager = new SensorEventsManager();
+		eventHandlers.forEach(eventHandler -> sensorEventsManager.registerEventHandler(event ->
+			eventHandler.handle(conversionFactory.createSensorEvent(event))
+		));
 		return sensorEventsManager;
-	}
-
-	private EventType getEventTypeByString(String CSSEventType) {
-		switch (CSSEventType) {
-			case "LightIsOn": return EventType.LIGHT_ON;
-			case "LightIsOff": return EventType.LIGHT_OFF;
-			case "DoorIsOpen": return EventType.DOOR_OPEN;
-			case "DoorIsClosed": return EventType.DOOR_CLOSED;
-			case "DoorIsLocked": return EventType.ALARM_ACTIVATE;
-			case "DoorIsUnlocked": return EventType.ALARM_DEACTIVATE;
-			default: return null;
-		}
 	}
 }
