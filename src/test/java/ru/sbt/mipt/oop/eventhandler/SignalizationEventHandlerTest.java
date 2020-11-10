@@ -36,12 +36,7 @@ class SignalizationEventHandlerTest {
         //when
         eventHandler.handle(sensorEvent);
         //then
-        smartHome.execute(o -> {
-            if (o instanceof Signalization) {
-                Signalization signalization = (Signalization) o;
-                assertEquals(ActivatedAlarmState.class, signalization.getState().getClass());
-            }
-        });
+        assertTrue(smartHome.getSignalization().isActivatedAlarmState());
     }
 
     @Test
@@ -50,21 +45,11 @@ class SignalizationEventHandlerTest {
         EventType eventType = EventType.ALARM_DEACTIVATE;
         sensorEvent = new SensorEvent(eventType, "0");
         sensorEvent.setCode("1234");
-        smartHome.execute(o -> {
-            if (o instanceof Signalization) {
-                Signalization signalization = (Signalization) o;
-                signalization.activate("1234");
-            }
-        });
+        smartHome.getSignalization().activate("1234");
         //when
         eventHandler.handle(sensorEvent);
         //then
-        smartHome.execute(o -> {
-            if (o instanceof Signalization) {
-                Signalization signalization = (Signalization) o;
-                assertEquals(DeactivatedAlarmState.class, signalization.getState().getClass());
-            }
-        });
+        assertTrue(smartHome.getSignalization().isDeactivatedAlarmState());
     }
 
     @Test
@@ -73,20 +58,10 @@ class SignalizationEventHandlerTest {
         EventType eventType = EventType.ALARM_DEACTIVATE;
         sensorEvent = new SensorEvent(eventType, "0");
         sensorEvent.setCode("134");
-        smartHome.execute(o -> {
-            if (o instanceof Signalization) {
-                Signalization signalization = (Signalization) o;
-                signalization.getState().activate("1234");
-            }
-        });
+        smartHome.getSignalization().activate("1234");
         //when
         eventHandler.handle(sensorEvent);
         //then
-        smartHome.execute(o -> {
-            if (o instanceof Signalization) {
-                Signalization signalization = (Signalization) o;
-                assertEquals(AlarmModeAlarmState.class, signalization.getState().getClass());
-            }
-        });
+        assertTrue(smartHome.getSignalization().isAlarmModeAlarmState());
     }
 }

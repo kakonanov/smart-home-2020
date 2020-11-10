@@ -8,21 +8,18 @@ import ru.sbt.mipt.oop.eventhandler.*;
 import ru.sbt.mipt.oop.eventgenerator.EventGenerator;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class EventCircleImpl implements EventCircle{
-	private final SmartHome smartHome;
 	private final EventGenerator eventGenerator;
-	private final List<EventHandler> eventHandlers;
+	private final Collection<EventHandler> eventHandlers;
 
-	public EventCircleImpl(SmartHome smartHome, EventGenerator eventGenerator) {
-		this.smartHome = smartHome;
+	public EventCircleImpl(EventGenerator eventGenerator, Collection<EventHandler> eventHandlers) {
 		this.eventGenerator = eventGenerator;
-		SenderAlarmMessage senderAlarmMessage = new SenderAlarmMessage();
-		eventHandlers = Stream.of(new StartEventHandler(), new DoorEventHandler(smartHome), new LightEventHandler(smartHome), new AllLightEventHandler(smartHome), new SignalizationEventHandler(smartHome))
-				.map(eventHandler -> new AlarmDecoratorEventHandler(eventHandler, smartHome, senderAlarmMessage)).collect(Collectors.toList());
+		this.eventHandlers = eventHandlers;
 	}
 
 	public void run() {
