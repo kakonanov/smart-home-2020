@@ -1,5 +1,7 @@
 package ru.sbt.mipt.oop.eventhandler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.sbt.mipt.oop.domain.Door;
 import ru.sbt.mipt.oop.domain.Room;
 import ru.sbt.mipt.oop.SensorCommand;
@@ -11,10 +13,12 @@ import ru.sbt.mipt.oop.type.CommandType;
 
 import static ru.sbt.mipt.oop.type.EventType.*;
 
+@Component
 public class AllLightEventHandler implements EventHandler {
 	private final SmartHome smartHome;
 	private final CommandSenderImpl commandSender;
 
+	@Autowired
 	public AllLightEventHandler(SmartHome smartHome) {
 		this.smartHome = smartHome;
 		this.commandSender = new CommandSenderImpl();

@@ -4,5 +4,6 @@ import ru.sbt.mipt.oop.SensorEvent;
 
 public class StartEventHandler implements EventHandler{
 	@Override
-	public void handle(SensorEvent sensorEvent) {}
+	public void handle(SensorEvent sensorEvent) {
+	}
 }
