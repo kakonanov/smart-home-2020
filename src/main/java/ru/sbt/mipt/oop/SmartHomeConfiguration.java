@@ -16,6 +16,7 @@ import ru.sbt.mipt.oop.type.EventType;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -38,32 +39,33 @@ public class SmartHomeConfiguration {
 
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	EventHandler startEventHandler() {
-		return new AlarmDecoratorEventHandler(new StartEventHandler(), smartHome(), senderAlarmMessage());
+	EventHandlerAdapter startEventHandler(SmartHome smartHome, SenderAlarmMessage senderAlarmMessage, ConversionFactory conversionFactory) {
+		return new EventHandlerAdapter(new AlarmDecoratorEventHandler(new StartEventHandler(), smartHome, senderAlarmMessage), conversionFactory);
 	}
 
 	@Bean
 	@Order()
-	EventHandler doorEventHandler() {
-		return new AlarmDecoratorEventHandler(new DoorEventHandler(smartHome()), smartHome(), senderAlarmMessage());
+	EventHandlerAdapter doorEventHandler(SmartHome smartHome, SenderAlarmMessage senderAlarmMessage, ConversionFactory conversionFactory) {
+		return new EventHandlerAdapter(new AlarmDecoratorEventHandler(new DoorEventHandler(smartHome), smartHome, senderAlarmMessage), conversionFactory);
 	}
 
 	@Bean
 	@Order()
-	EventHandler lightEventHandler() {
-		return new AlarmDecoratorEventHandler(new LightEventHandler(smartHome()), smartHome(), senderAlarmMessage());
+	EventHandlerAdapter lightEventHandler(SmartHome smartHome, SenderAlarmMessage senderAlarmMessage, ConversionFactory conversionFactory) {
+		return new EventHandlerAdapter(new AlarmDecoratorEventHandler(new LightEventHandler(smartHome), smartHome, senderAlarmMessage), conversionFactory);
+
 	}
 
 	@Bean
 	@Order()
-	EventHandler allLightEventHandler() {
-		return new AlarmDecoratorEventHandler(new AllLightEventHandler(smartHome()), smartHome(), senderAlarmMessage());
+	EventHandlerAdapter allLightEventHandler(SmartHome smartHome, SenderAlarmMessage senderAlarmMessage, ConversionFactory conversionFactory) {
+		return new EventHandlerAdapter(new AlarmDecoratorEventHandler(new AllLightEventHandler(smartHome), smartHome, senderAlarmMessage), conversionFactory);
 	}
 
 	@Bean
 	@Order()
-	EventHandler signalizationEventHandler() {
-		return new AlarmDecoratorEventHandler(new SignalizationEventHandler(smartHome()), smartHome(), senderAlarmMessage());
+	EventHandlerAdapter signalizationEventHandler(SmartHome smartHome, SenderAlarmMessage senderAlarmMessage, ConversionFactory conversionFactory) {
+		return new EventHandlerAdapter(new AlarmDecoratorEventHandler(new SignalizationEventHandler(smartHome), smartHome, senderAlarmMessage), conversionFactory);
 	}
 
 	@Bean
@@ -78,7 +80,9 @@ public class SmartHomeConfiguration {
 	}
 
 	@Bean
-	SensorEventsManager sensorEventsManager(Collection<EventHandler> eventHandlers, ConversionFactory conversionFactory) {
-		return new SensorEventsManagerAdapter(eventHandlers, conversionFactory).getSensorEventsManager();
+	SensorEventsManager sensorEventsManager(List<EventHandlerAdapter> eventHandlers) {
+		SensorEventsManager sensorEventsManager = new SensorEventsManager();
+		eventHandlers.forEach(sensorEventsManager::registerEventHandler);
+		return sensorEventsManager;
 	}
 }
